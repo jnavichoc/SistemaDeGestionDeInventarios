@@ -21,8 +21,10 @@ public class ProyectSistemaGestionDeInventarios {
         
         int opcion;
         String pw;
-        File passwordFile = new File ("contraseña.txt");
-       /* if (passWord.exists()){
+        File categorias = new File ("categorias.txt");
+       
+        //verificacion de la existencia del archivo
+        /*if (categorias.exists()){
             System.out.println("El archivo existe");
             }
         else {System.out.println("No existe");
@@ -40,10 +42,44 @@ public class ProyectSistemaGestionDeInventarios {
         opcion = entrada.nextInt();
         
         switch (opcion) {
-            case 1: System.out.println("Ingrese Contraseña (admin):");
+            case 1: System.out.println("GESTION DE PRODUCTOS\nIngrese Contraseña (admin):");
+                   pw = entrada.next();
+               
+                   if ("admin246".equals(pw)){  
+                        System.out.println("Categorias de Productos\n");
+                        System.out.println("1. Categorias Existentes");
+                        System.out.println("2. Agregar Nueva Categoria");
+                        System.out.println("3. Modificar Categoria");
+                        System.out.println("4. Eliminar Categoria"); 
+                        System.out.println("5. Salir");
+                        System.out.println("Seleccione una opcion:");
+                 
+                        opcion = entrada.nextInt();
+                        switch (opcion){
+                            case 1: 
+                                System.out.println();
+                                break;
+                            case 2:
+                                
+                                break;
+                            case 3:
+                                    
+                                break;
+                            case 4:
+                                break;
+                            case 5:
+                                break;
+                            default:
+                                System.out.println("Opcion Invalida");
+                        }
+                   }
+                   else {System.out.println("Contraseña Incorrecta, intente de nuevo o ingrese 0 para regresar:");
+                       pw = entrada.next();}
+  
+                   break;
                    
-            
-        
+            case 2: System.out.println("CONTROL DE EXISTENCIAS\n");
+                    System.out.println("");
         }
         
       
