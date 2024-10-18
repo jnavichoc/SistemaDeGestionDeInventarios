@@ -11,6 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -196,7 +198,8 @@ public class ProyectSistemaGestionDeInventarios {
                 break;
             
             case 5: //productos
-                
+                System.out.println("---------------PRODUCTOS------------------------");
+                Productos();
                 break; 
             
             case 6: //Eliminar categoria existente
@@ -253,7 +256,8 @@ public class ProyectSistemaGestionDeInventarios {
                                System.out.println("Error al escribir en el archivo: " + ex.getMessage());  
                                } 
                     System.out.println("Desea agregar otra categoria?");
-                    System.out.println("1. Si   2. No, regresar al menú de gestion de productos");
+                    System.out.println("1. Si");   
+                    System.out.println("2. No, regresar al menu de gestion de productos");
                     System.out.print("Selecciones una opcion: ");
                     opcion = entrada.nextInt();
                     entrada.nextLine(); //para limpiar el buffer
@@ -391,7 +395,7 @@ public class ProyectSistemaGestionDeInventarios {
                             System.out.println("Desea seguir eliminando categorias?");
                             System.out.println("1. Sí");
                             System.out.println("2. No, regresar al menu anterior");
-                            System.out.print("Opcion: ");
+                            System.out.print("Seleccione una Opcion: ");
                             opcion = scan.nextInt();
                             scan.nextLine(); 
 
@@ -399,80 +403,155 @@ public class ProyectSistemaGestionDeInventarios {
                             
             }//Fin del metodo EliminarCategoria()
             
-            
-            
-//---------------------------------------------------------------------------------------------------------------------------------------------------------        
-    
-    public static void Productos() throws IOException{
+                    
+    //si la opcion es 5 del menu de gestion de productos
+    public static void Productos(){
         Scanner scan = new Scanner(System.in);
         String productosRuta = ".\\src\\proyectsistemagestiondeinventarios\\Productos.txt";
-        String nomCategoria = ""; int opcion;
+        String nomProducto = ""; int opcion; int option; int codProducto;
         
-        try{
-            FileReader fr = new FileReader(productosRuta);
-            BufferedReader br = new BufferedReader(fr);
-             
-            String[][] datosProductos = new String[10][2]; // Supongamos que se tiene un máximo de 10 productos
-            String linea;
-            int contador = 0;
-
-            // Leer datos del archivo
-            while ((linea = br.readLine()) != null) {
-                String[] campos = linea.split("\\|");
-                if (campos.length >= 1) {
-                    for (int i = 0; i < campos.length && i < 1; i++) {
-                        datosProductos[contador][i] = campos[i];
-                    }
-                    contador++;
-                } else {
-                    System.out.println("Línea con datos incompletos: " + linea);
-                }
-            }
-
-            System.out.print("Ingrese código a buscar: ");
-            String codigo = scan.nextLine();
-            int indiceAModificar = -1;
-
-            // Buscar el estudiante por código
-            for (int i = 0; i < contador; i++) {
-                if (datosProductos[i][0] != null && datosProductos[i][0].equals(codigo)) {
-                    System.out.println("Producto encontrado: " + datosProductos[i][1] + " " + datosProductos[i][2]);
-                    indiceAModificar = i;
-                    break; // Salir una vez que se encuentre el producto
-                }
-            }
-
-            // Verificar si se encontró el índice
-            if (indiceAModificar != -1) {
-                System.out.print("Ingrese el nuevo nombre: ");
-                String nuevoNombre = scan.nextLine();
-                datosProductos[indiceAModificar][1] = nuevoNombre;
+        System.out.println("1. Alta de Productos");
+        System.out.println("2. Baja de Productos ");
+        System.out.println("3. Modificacion de Productos");
+        System.out.println("4. Regresar");
+        System.out.print("Seleccione una opcion;");
+        opcion = scan.nextInt();
+        
+        switch (opcion){
+            case 1: 
+                do{
+                    try {
+                        FileReader fr = new FileReader(productosRuta);
+                        BufferedReader br = new BufferedReader(fr);
+                        
+                        String linea;
+                        boolean productoExistente = false;
+                        System.out.println("Ingrese un nombre para el nuevo Producto:");
+                        nomProducto = scan.nextLine();  
+                        nomProducto = nomProducto.toUpperCase();
+                        
+                        //validacion de que el  nombre de la categoria no este vacío y no exista otra categoria con el mismo nombre
+                        while ((linea=br.readLine())!=null){
+                                if (linea.equals(nomProducto)){
+                                productoExistente = true;
+                                break;
+                                }
+                            }
+                        br.close();
+                        
+                        if(nomProducto.isEmpty()){
+                            System.out.println("El nombre del producto no puede estar vacio");
+                            }else if(productoExistente){
+                            System.out.println("Ya existe un producto con ese nombre.");
+                            } else { 
+                                FileWriter fw = new FileWriter(productosRuta, true);
+                                BufferedWriter bw = new BufferedWriter (fw);
+                                bw.write(nomProducto);
+                                bw.newLine();
+                                bw.close();
+                                System.out.println("Producto creado exitosamente");
+                                }
+                    } catch (IOException ex){
+                               System.out.println("Error al escribir en el archivo: " + ex.getMessage());  
+                               } 
+                    System.out.println("Desea agregar otro producto?");
+                    System.out.println("1. Si");   
+                    System.out.println("2. No, regresar al menu de gestion de productos");
+                    System.out.print("Selecciones una opcion: ");
+                    opcion = scan.nextInt();
+                    scan.nextLine(); //para limpiar el buffer
+                    
+                } while (opcion==1);
+                break;
+            
+            case 2:
                 
-                System.out.println("Nombre modificado a: " + datosProductos[indiceAModificar][1] + " " + datosProductos[indiceAModificar][2]);
-            } else {
-                System.out.println("Código no encontrado.");
-                return; // Salir si no se encuentra el estudiante
-            }
-
-            // Escribir de nuevo los datos en el archivo
-            try {
-                FileWriter fw = new FileWriter(productosRuta);
-                BufferedWriter bw = new BufferedWriter(fw);
+                
+                
+                break;
+                
+            case 3:
+                try {
+                    FileReader fr = new FileReader(productosRuta);
+                    BufferedReader br = new BufferedReader(fr);
              
-                for (int i = 0; i < contador; i++) {
-                    if (datosProductos[i][0] != null) {
-                        bw.write(String.join("|", datosProductos[i]) + "\n");
+                    String[][] datosProductos = new String[10][2]; // Supongamos que se tiene un máximo de 10 productos
+                    String linea;
+                    int contador = 0;
+                    while ((linea = br.readLine()) != null) {
+                        String [] campos = linea.split("\\|");
+                        datosProductos[contador][0] = campos[0];
+                        datosProductos[contador][1] = campos[1];
+                        datosProductos[contador][2] = campos[2];
+                        datosProductos[contador][3] = campos[3];
+                        datosProductos[contador][4] = campos[4];
+                        datosProductos[contador][5] = campos[5];
+                        contador++;
                     }
-                }
-                System.out.println("Datos guardados exitosamente.");
-            } catch (FileNotFoundException ex) {
-            System.out.println("El archivo no se encontró: " + ex.getMessage());
-        } catch (IOException ex) {
-            System.out.println("Error al leer o escribir en el archivo: " + ex.getMessage());
+            
+                    br.close();
+                    fr.close();
+                    
+                    System.out.print("Ingrese código a buscar: ");
+                    String codigo = scan.nextLine();
+                    int indiceAModificar = -1;
+                        for (int i = 0; i < datosProductos.length; i++) {
+                
+                            if (datosProductos[i][0] != null &&
+                                datosProductos[i][0].compareTo(codigo) == 0) {
+                                System.out.println(datosProductos[i][1] + " " +
+                                                   datosProductos[i][2]);
+                                indiceAModificar = i;
+                            }
+                        }
+                     
+                    System.out.print("Ingrese el nuevo nombre: ");
+                    String nuevoNombre = scan.nextLine();
+            
+                    datosProductos[indiceAModificar][1] = nuevoNombre;
+            
+                    System.out.println(datosProductos[indiceAModificar][1] + " " +
+                                       datosProductos[indiceAModificar][2]);
+            
+                                       contador = 0;
+            
+                    FileWriter fw = new FileWriter(productosRuta);
+                    BufferedWriter bw = new BufferedWriter(fw);
+            
+                    while (datosProductos[contador][0] != null && contador < datosProductos.length) {       
+                           bw.write(datosProductos[contador][0] + "|" +
+                                    datosProductos[contador][1] + "|" +
+                                    datosProductos[contador][2] + "|" +
+                                    datosProductos[contador][3] + "|" +
+                                    datosProductos[contador][4] + "|" +
+                                    datosProductos[contador][5] + "\n");
+                                    contador++;
+                    }
+            
+                    bw.close();
+                    fw.close();
+
+                    
+                } catch (IOException ex){}
+                break;
+             
+            case 4:
+                MenuGestionDeProductos ();
+                break;
+                
+            default:
+                System.out.println("Opción no válida.");
+                return;
+        
         }
-        }catch (IOException ex){}
+            
+        
+    
        
     }//Fin del metodo Productos()   
-
+    
+    
+    
+//--------CONTROL DE EXISTENCIAS-------------------------------------------------------------------------------------------------------------------------------------------------
     
 } //Fin de la clase Proyecto 
